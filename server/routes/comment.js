@@ -1,20 +1,19 @@
 import express from "express";
+import {
+  createComment,
+  deleteComment,
+  editComment,
+} from "../controllers/comment.js";
 
 const router = express.Router();
 
 // CREATE A COMMENT
-router.post("/", (req, res) => {
-  res.send("POST /comment");
-});
+router.post("/", createComment);
 
 // EDIT A COMMENT
-router.patch("/:id", (req, res) => {
-  res.send(`PATCH /comment/${req.params.id}`);
-});
+router.patch("/:id", editComment);
 
 // DELETE A COMMENT
-router.delete("/:id", (req, res) => {
-  res.send(`DELETE /comment/${req.params.id}`);
-});
+router.delete("/:id", deleteComment);
 
 export default router;
