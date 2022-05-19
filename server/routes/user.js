@@ -1,20 +1,15 @@
 import express from "express";
+import { deleteUser, editUser, getUser } from "../controllers/user.js";
 
 const router = express.Router();
 
 // GET A USER
-router.get("/:id", (req, res) => {
-  res.send(`GET /user/${req.params.id}`);
-});
+router.get("/:id", getUser);
 
 // EDIT A USER
-router.patch("/:id", (req, res) => {
-  res.send(`PATCH /user/${req.params.id}`);
-});
+router.patch("/:id", editUser);
 
 // DELETE A USER
-router.delete("/:id", (req, res) => {
-  res.send(`DELETE /user/${req.params.id}`);
-});
+router.delete("/:id", deleteUser);
 
 export default router;
