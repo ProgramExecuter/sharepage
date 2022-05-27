@@ -1,4 +1,7 @@
+import { mongoose } from "mongoose";
 import Post from "../models/post.js";
+
+const ObjectId = mongoose.Types.ObjectId;
 
 // Get All Posts
 const getAllPosts = async (req, res) => {
@@ -52,8 +55,28 @@ const getPost = async (req, res) => {
 };
 
 // Edit a paticular Post
-const editPost = (req, res) => {
-  res.send(`PATCH /post/${req.params.id}`);
+const editPost = async (req, res) => {
+  const postId = req.params.id;
+  let newInfo = req.body;
+  let newPost = null;
+
+  try {
+    // Invalid ObjectID
+    if (!ObjectId.isValid(postId)) throw new Error("Post Not Found");
+
+    newPost = await Post.findByIdAndUpdate(postId, newInfo);
+  } catch (err) {
+    // Post not found
+    return res.status(400).json({ error: err.message });
+  }
+
+  if (!newPost) {
+    // Post not found
+    return res.status(404).json({ error: "Post Not Found" });
+  } else {
+    // Found and updated the post
+    return res.status(200).json({ message: "Post Updated" });
+  }
 };
 
 // Delete a particular Post
