@@ -17,13 +17,13 @@ const getAllPosts = async (req, res) => {
 };
 
 // Create new Post
-const createNewPost = (req, res) => {
+const createNewPost = async (req, res) => {
   // create the post
   let newPost = new Post(req.body);
 
   try {
     // Save the post in DB
-    newPost.save();
+    await newPost.save();
   } catch (err) {
     // Encountered error, return
     res.status(400).json({ error: err });
@@ -34,8 +34,21 @@ const createNewPost = (req, res) => {
 };
 
 // Get a particular post
-const getPost = (req, res) => {
-  res.send(`GET /post/${req.params.id}`);
+const getPost = async (req, res) => {
+  const postId = req.params.id;
+  let particularPost;
+
+  try {
+    // Find the post with id as 'postId'
+    particularPost = await Post.findById(postId);
+  } catch (err) {
+    // Post not found
+    res.status(404).json({ error: "Post not found" });
+  }
+
+  // Post not found
+  if (!particularPost) res.status(404).json({ error: "Post not found" });
+  else res.status(200).json(particularPost);
 };
 
 // Edit a paticular Post
