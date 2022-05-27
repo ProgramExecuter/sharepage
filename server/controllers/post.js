@@ -12,11 +12,11 @@ const getAllPosts = async (req, res) => {
     postsData = await Post.find();
   } catch (err) {
     // Encountered error, return
-    res.status(400).json({ error: err });
+    return res.status(400).json({ error: err.message });
   }
 
   // Return the posts
-  res.status(200).json(postsData);
+  return res.status(200).json(postsData);
 };
 
 // Create new Post
@@ -29,11 +29,11 @@ const createNewPost = async (req, res) => {
     await newPost.save();
   } catch (err) {
     // Encountered error, return
-    res.status(400).json({ error: err });
+    return res.status(400).json({ error: err.message });
   }
 
-  // Return new created & saved post
-  res.status(201).json(newPost);
+  // Return newly created & saved post
+  return res.status(201).json(newPost);
 };
 
 // Get a particular post
@@ -46,12 +46,16 @@ const getPost = async (req, res) => {
     particularPost = await Post.findById(postId);
   } catch (err) {
     // Post not found
-    res.status(404).json({ error: "Post not found" });
+    return res.status(404).json({ error: "Post not found" });
   }
 
   // Post not found
-  if (!particularPost) res.status(404).json({ error: "Post not found" });
-  else res.status(200).json(particularPost);
+  if (!particularPost) {
+    return res.status(404).json({ error: "Post not found" });
+  }
+
+  // Post found
+  return res.status(200).json(particularPost);
 };
 
 // Edit a paticular Post
@@ -64,6 +68,7 @@ const editPost = async (req, res) => {
     // Invalid ObjectID
     if (!ObjectId.isValid(postId)) throw new Error("Post Not Found");
 
+    // Try updating the post
     newPost = await Post.findByIdAndUpdate(postId, newInfo);
   } catch (err) {
     // Post not found
@@ -73,10 +78,10 @@ const editPost = async (req, res) => {
   if (!newPost) {
     // Post not found
     return res.status(404).json({ error: "Post Not Found" });
-  } else {
-    // Found and updated the post
-    return res.status(200).json({ message: "Post Updated" });
   }
+
+  // Found and updated the post
+  return res.status(200).json({ message: "Post Updated" });
 };
 
 // Delete a particular Post
