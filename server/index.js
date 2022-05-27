@@ -6,24 +6,18 @@ import postRoute from "./routes/post.js";
 import userRoute from "./routes/user.js";
 import commentRoute from "./routes/comment.js";
 
-//////////////////////
-///   ENV Setup   ///
-////////////////////
+// ENV Setup
 dotenv.config();
 
 const app = express();
 
-////////////////////
-///   ROUTES   ////
-//////////////////
+// ROUTES
 app.use("/auth", authRoute);
 app.use("/post", postRoute);
 app.use("/user", userRoute);
 app.use("/comment", commentRoute);
 
-////////////////////////
-///  Server Setup   ///
-//////////////////////
+// Server Setup
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server Listening at PORT ${PORT}`);
