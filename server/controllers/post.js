@@ -85,8 +85,23 @@ const editPost = async (req, res) => {
 };
 
 // Delete a particular Post
-const deletePost = (req, res) => {
-  res.send(`DELETE /post/${req.params.id}`);
+const deletePost = async (req, res) => {
+  const postId = req.params.id;
+  let foundPost;
+
+  try {
+    // Check if ObjectID is valid
+    if (ObjectId.isValid(postId)) {
+      // Try deleting the post
+      await Post.findByIdAndDelete(postId);
+    }
+  } catch (err) {
+    // Error encountered, return
+    return res.status(404).json({ err: err.message });
+  }
+
+  // Deleted the post
+  return res.status(200).json({ message: "Post Deleted" });
 };
 
 export { getAllPosts, createNewPost, getPost, editPost, deletePost };
