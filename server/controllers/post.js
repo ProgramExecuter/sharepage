@@ -1,6 +1,16 @@
+import Post from "../models/post.js";
+
 // Get All Posts
-const getAllPosts = (req, res) => {
-  res.send("GET /post");
+const getAllPosts = async (req, res) => {
+  let postsData;
+
+  try {
+    postsData = await Post.find();
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+
+  res.status(200).json(postsData);
 };
 
 // Create new Post
