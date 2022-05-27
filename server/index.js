@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 
 import authRoute from "./routes/auth.js";
 import postRoute from "./routes/post.js";
@@ -27,6 +28,10 @@ mongoose.connect(
 );
 
 const app = express();
+
+// App configs
+app.use(cors());
+app.use(express.json());
 
 // ROUTES
 app.use("/auth", authRoute);
