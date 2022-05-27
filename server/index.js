@@ -1,12 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import mongoose from "mongoose";
 
 import authRoute from "./routes/auth.js";
 import postRoute from "./routes/post.js";
 import userRoute from "./routes/user.js";
 import commentRoute from "./routes/comment.js";
-import mongoose from "mongoose";
 
 // ENV Setup
 dotenv.config();
