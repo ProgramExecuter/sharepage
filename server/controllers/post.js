@@ -5,17 +5,32 @@ const getAllPosts = async (req, res) => {
   let postsData;
 
   try {
+    // GET posts from DB
     postsData = await Post.find();
   } catch (err) {
+    // Encountered error, return
     res.status(400).json({ error: err });
   }
 
+  // Return the posts
   res.status(200).json(postsData);
 };
 
 // Create new Post
 const createNewPost = (req, res) => {
-  res.send("POST /post");
+  // create the post
+  let newPost = new Post(req.body);
+
+  try {
+    // Save the post in DB
+    newPost.save();
+  } catch (err) {
+    // Encountered error, return
+    res.status(400).json({ error: err });
+  }
+
+  // Return new created & saved post
+  res.status(201).json(newPost);
 };
 
 // Get a particular post
