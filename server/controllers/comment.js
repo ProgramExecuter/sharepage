@@ -1,6 +1,20 @@
+import Comment from "../models/comment.js";
+
 // Create a comment
 const createComment = (req, res) => {
-  res.send("POST /comment");
+  // create new comment object
+  const newComment = new Comment(req.body);
+
+  try {
+    // Save the comment
+    newComment.save();
+  } catch (err) {
+    // Error encountered
+    return req.status(400).json({ error: err });
+  }
+
+  // Return the newly created comment
+  return res.status(201).json(newComment);
 };
 
 // Edit a comment
