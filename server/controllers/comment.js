@@ -38,8 +38,18 @@ const editComment = async (req, res) => {
 };
 
 // Delete a comment
-const deleteComment = (req, res) => {
-  res.send(`DELETE /comment/${req.params.id}`);
+const deleteComment = async (req, res) => {
+  const commentId = req.params.id;
+
+  try {
+    // Find the comment and delete
+    await Comment.findByIdAndDelete(commentId);
+  } catch (err) {
+    // Error encountered
+    return res.status(404).json({ error: err.message });
+  }
+
+  return res.status(200).json({ message: "Comment Deleted" });
 };
 
 export { createComment, editComment, deleteComment };
